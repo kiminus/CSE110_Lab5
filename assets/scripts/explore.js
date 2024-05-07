@@ -1,34 +1,38 @@
 // explore.js
 
 window.addEventListener("DOMContentLoaded", init);
-const voice_image = document.querySelector("#expose img");
-const selectors = document.getElementById("voice-select");
-const voices_entries = [
-  [
-    "assets/images/air-horn.png",
-    "assets/images/car-horn.png",
-    "assets/images/party-horn.png",
-  ],
-  ["air horn", "car horn", "party horn"],
-  [
-    "assets/audio/air-horn.mp3",
-    "assets/audio/car-horn.mp3",
-    "assets/audio/party-horn.mp3",
-  ],
-];
-//console.log(selectors);
-function init() {
-  voice_image.src = "assets/images/no-image.png";
-  populateVoices(voices_entries[1]);
-}
+const synth = window.speechSynthesis;
 
-function populateVoices(names) {
-  for (var i = 0; i < 3; i++) {
-    const option = document.createElement("option");
-    option.value = names[i];
-    option.text = names[i];
-    selectors.appendChild(option);
-  }
-  console.log(selectors);
-  selectors.addEventListener("change", when_voice_selected);
+const face_img = document.querySelector("#explore img");
+const textarea = document.querySelector("#explore #text-to-speak");
+const voice_select = document.querySelector("#explore #voice-select");
+const talk_btn = document.querySelector("#explore button");
+let voices = [];
+function init() {
+  synth.getVoices(); //dont know why need to put here, but needed
 }
+window.onload = () => {
+  voices = window.speechSynthesis.getVoices();
+  //console.log(voices);
+
+  for (let index = 0; index < voices.length; index++) {
+    const option = document.createElement("option");
+    option.value = voices[index].name;
+    option.text = voices[index].name;
+    voice_select.appendChild(option);
+  }
+  talk_btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.speechSynthesis.cancel();
+    face_img.src = "assets/images/smiling-open.png";
+    //console.log(textarea.value);
+    const utter = new SpeechSynthesisUtterance(textarea.value);
+    utter.voice = voices[voice_select.value];
+    window.speechSynthesis.speak(utter);
+    textarea.value = "";
+
+    utter.addEventListener("end", () => {
+      face_img.src = "assets/images/smiling.png";
+    });
+  });
+};

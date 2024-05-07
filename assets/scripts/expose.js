@@ -22,6 +22,7 @@ const voices_entries = [
 ];
 //console.log(selectors);
 function init() {
+  horn_image.src = "assets/images/no-image.png";
   //console.log(voices_entries[0][1]);
   horn_image.src = voices_entries[0][1];
   selectors.addEventListener("change", when_voice_selected);
