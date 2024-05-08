@@ -24,7 +24,6 @@ const voices_entries = [
 function init() {
   horn_image.src = "assets/images/no-image.png";
   //console.log(voices_entries[0][1]);
-  horn_image.src = voices_entries[0][1];
   selectors.addEventListener("change", when_voice_selected);
   play_sound_btn.addEventListener("click", when_play_sound_clicked);
   volume_slider.addEventListener("change", (e) => {
